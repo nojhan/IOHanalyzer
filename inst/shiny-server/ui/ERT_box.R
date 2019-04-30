@@ -7,6 +7,9 @@ ERT_box <- function(width = 12, collapsible = T, collapsed = T) {
           width = 3,
           HTML('<p style="font-size:120%;">Range of the displayed target values</p>'),
 
+          selectInput('ERTPlot.Algs', label = 'Select which algorithms to plot:',
+                      multiple = T, selected = NULL, choices = NULL),
+
           textInput('ERTPlot.Min',
                     label = F_MIN_LABEL,
                     value = ''),
@@ -38,46 +41,11 @@ ERT_box <- function(width = 12, collapsible = T, collapsed = T) {
                         label = 'scale y axis log10',
                         value = T),
 
-          checkboxInput('ERTPlot.show.grad',
-                        label = 'show runs intensity',
-                        value = F),
-
-          conditionalPanel(
-            condition = 'input["ERTPlot.show.grad"] == true',
-            column(
-              width = 11, offset = 1,
-              sliderInput('ERTPlot.show.intensity', label = "Runs intensity(%)",
-                          min = -1, max = 1, value = 0, step = 0.1)
-            )
-          ),
-
-          checkboxInput('ERTPlot.show_all',
-                        label = 'show/hide multiple runs',
-                        value = F),
-          conditionalPanel(condition = 'input["ERTPlot.input.show_all"] == true',
-
-                           fluidRow(column(
-                             11,
-                             offset = 1,
-                             sliderInput('ERTPlot.show.density',
-                                         label = "Runs density(%)",
-                                         min = 1, max = 100, value = 50, step = 1),
-                             checkboxInput('ERTPlot.show.best_of_all',
-                                           label = 'show/hide best run',
-                                           value = F),
-                             checkboxInput('ERTPlot.show.pareto_optima',
-                                           label = 'show/hide pareto optimal front',
-                                           value = F)
-                           ))),
-
           selectInput('ERTPlot.Format', label = 'select the figure format',
                       choices = supported_fig_format, selected = 'pdf'),
 
           downloadButton('ERTPlot.Download', label = 'download the figure')
 
-          # checkboxInput('show.instance',
-          #               label = 'show each independent run',
-          #               value = F)
         ),
 
         mainPanel(

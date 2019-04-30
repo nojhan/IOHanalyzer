@@ -1,10 +1,3 @@
-#
-# This is the user interface of the Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Author: Hao Wang
-# Email: wangronin@gmail.com
-
 for (f in list.files('ui', pattern = '.R', full.names = T)) {
   source(f)
 }
@@ -35,10 +28,20 @@ body <- dashboardBody(
 
   tags$script(HTML('
       $(document).ready(function() {
-        $("header").find("nav").append(\'<span class="myClass"> Post-Processing Part for Performance Evaluation</span>\');
+        $("header").find("nav").append(\'<span class="myClass">Performance Evaluation for Iterative Optimization Heuristics</span>\');
       })
      ')),
-
+  tags$script("
+      Shiny.addCustomMessageHandler('background-color', function(color) {
+              document.body.style.backgroundColor = color;
+              document.body.innerText = color;
+              });
+              "),
+  tags$script("Shiny.addCustomMessageHandler('set_trace_input', function(color) {
+                Shiny.setInputValue('ERTPlot_Traces', document.getElementById('ERT_PER_FUN').data.map(trace => trace.visible != 'legendonly'));
+                document.body.style.backgroundColor = color;
+                document.body.innerText = color;
+              });"),
   tags$script(HTML('
        window.setInterval(function() {
         var elem = document.getElementById("process_data_promt");
@@ -191,6 +194,5 @@ body <- dashboardBody(
   )
 )
 
-
 # -----------------------------------------------------------
-dashboardPage(title = IOHprofiler, header, sidebar, body)
+dashboardPage(title = 'IOHanalyzer', header, sidebar, body)

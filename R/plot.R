@@ -1,11 +1,3 @@
-# setup the default layout for
-# 1. plotly 2. ggplot
-# Author: Hao Wang
-# Email: wangronin@gmail.com
-
-suppressMessages(library(plotly))
-suppressMessages(library(ggplot2))
-
 # font No. 1...
 f1 <- list(
   family = 'Old Standard TT, serif',
@@ -27,15 +19,28 @@ f3 <- list(
   color = 'black'
 )
 
+legend_right <- list(x = 1.01, y = 0.9, orientation = 'v',
+                     font = list(size = 13, family = 'Old Standard TT, serif'))
+
+legend_inside <- list(x = .01, y = 0.9, orientation = 'v',
+                      bgcolor = 'rgba(255, 255, 255, 0)',
+                      bordercolor = 'rgba(255, 255, 255, 0)',
+                      font = list(size = 13, family = 'Old Standard TT, serif'))
+
+legend_inside2 <- list(x = 0.7, y = 0.1, orientation = 'v',
+                      bgcolor = 'rgba(255, 255, 255, 0)',
+                      bordercolor = 'rgba(255, 255, 255, 0)',
+                      font = list(size = 13, family = 'Old Standard TT, serif'))
+
+# TODO: create font object as above for title, axis...
 plot_ly_default <- function(title = NULL, x.title = NULL, y.title = NULL) {
   plot_ly() %>%
-    layout(title = title,
+    layout(title = list(text = title, 
+                        font = list(size = 13, family = 'Old Standard TT, serif')),
            autosize = T, hovermode = 'compare',
-           legend = list(x = 1.01, y = 0.9, orientation = 'v',
-                         font = list(size = 13, family = 'Old Standard TT, serif')),
+           legend = legend_right,
            paper_bgcolor = 'rgb(255,255,255)', plot_bgcolor = 'rgb(229,229,229)',
            font = list(size = 13, family = 'Old Standard TT, serif'),
-           titlefont = list(size = 13, family = 'Old Standard TT, serif'),
            autosize = T,
            showlegend = T, 
            xaxis = list(
@@ -155,6 +160,22 @@ color_palettes <- function(ncolor) {
 
 # TODO: we have to change the working directory back and force because
 # function 'orca' always generates figures in the current folder
+
+#' Save plotly figure in multiple format
+#' 
+#' NOTE: This function requires orca to be installed, and for pdf and eps formats 
+#' inkscape is also needed.
+#'
+#' @param p plotly object. The plot to be saved
+#' @param file String. The name of the figure file
+#' @param format String. The format of the figure: 'svg', 'pdf', 'eps', 'png' are supported
+#' @param ... Additional arguments for orca
+#' @export
+#' @examples 
+#' \donttest{
+#' p <- Plot.RT.Single_Func(dsl[1])
+#' save_plotly(p, 'example_file', format = 'png')
+#' }
 save_plotly <- function(p, file, format = 'svg', ...) {
   pwd.calling <- getwd()
   des <- dirname(file)
@@ -169,8 +190,12 @@ save_plotly <- function(p, file, format = 'svg', ...) {
   else {
     file_svg <- paste0(file, '.svg')
     orca(p, file_svg, format = 'svg', ...)
-    invisible(system(paste('inkscape', file_svg, paste0('--export-', format, '=', file)),
-                     intern = T))
+    invisible(
+      system(
+        paste('inkscape', file_svg, paste0('--export-', format, '=', file)),
+        intern = T
+      )
+    )
     file.remove(file_svg)
   }
 

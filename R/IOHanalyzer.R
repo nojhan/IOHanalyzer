@@ -1,4 +1,4 @@
-#' @importFrom stats dt ecdf integrate median quantile sd
+#' @importFrom stats dt ecdf integrate median quantile sd 
 #' @importFrom grDevices col2rgb colors nclass.FD
 #' @importFrom graphics hist
 #' @importFrom utils data head read.csv tail
@@ -9,9 +9,9 @@
 #' @importFrom colorRamps primary.colors
 #' @importFrom data.table as.data.table rbindlist data.table fread := melt
 #' @importFrom plotly add_annotations add_trace orca plot_ly rename_ subplot layout
-#' @importFrom ggplot2 aes geom_jitter geom_line geom_ribbon geom_violin ggplot
+#' @importFrom ggplot2 aes geom_jitter geom_line geom_ribbon geom_violin ggplot element_text
 #' @importFrom ggplot2 guides scale_color_manual scale_colour_manual scale_fill_manual
-#' @importFrom ggplot2 scale_x_continuous scale_x_log10 facet_wrap
+#' @importFrom ggplot2 scale_x_continuous scale_x_log10 facet_wrap theme_set theme_grey theme
 #' @importFrom shiny req
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib IOHanalyzer
@@ -20,6 +20,8 @@ NULL
 utils::globalVariables(c(".","algId","run","ERT","RT","max_samples",
                          "DIM", "Fvalue", "lower", "upper", "target", "format",
                          "runtime", "parId", "instance", "input", "funcId"))
+
+options(shiny.port = 4242)
 
 probs <- c(2, 5, 10, 25, 50, 75, 90, 95, 98) / 100.
 
@@ -59,4 +61,14 @@ max_samples <- 100
 #'
 #' @docType package
 #' @name IOHanalyzer
+#' @examples 
+#' path <- system.file("extdata", "ONE_PLUS_LAMDA_EA", package="IOHanalyzer")
+#' dsList <- DataSetList(path)
+#' summary(dsList)
+#' Plot.RT.Single_Func(dsList[1])
+#' 
+#' @examples 
+#' \donttest{
+#' runServer()
+#' }
 NULL
