@@ -1,6 +1,3 @@
-library(testthat);
-library(IOHanalyzer);
-
 context("Basic DataSetList functionality")
 
 test_that("Can DataSetLists be loaded?",{
